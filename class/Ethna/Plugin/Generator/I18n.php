@@ -90,20 +90,14 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
         //  ディレクトリを走査
         foreach ($scan_dir as $dir) {
             if (is_dir($dir) === false) {
-                Ethna::raiseNotice("$dir is not Directory.", E_GENERAL);
+                throw new Ethna_Exception("$dir is not Directory.", E_GENERAL);
                 continue;
             }
             $r = $this->_analyzeDirectory($dir);
-            if (Ethna::isError($r)) {
-                return $r;
-            }
         }
 
         //  解析済みトークンを元に、カタログファイルを生成
         $r = $this->_generateFile();
-        if (Ethna::isError($r)) {
-            return $r;
-        }
 
         $true = true;
         return $true;
@@ -148,7 +142,7 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
     {
         $dh = opendir($dir);
         if ($dh == false) {
-            return Ethna::raiseWarning(
+            throw new Ethna_Exception(
                        "unable to open Directory: $dir", E_GENERAL
                    );
         }
@@ -172,9 +166,6 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
                 if (preg_match("#\.${tpl_ext}\$#i", $file) > 0) {
                     $r = $this->_analyzeTemplate("$dir/$file");
                 }
-            }
-            if (Ethna::isError($r)) {
-                return $r;
             }
         }
 
@@ -202,7 +193,7 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
         //  ファイルを開けないならエラー
         $fp = @fopen($file_path, 'r');
         if ($fp === false) {
-            return Ethna::raiseWarning(
+            throw new Ethna_Exception(
                        "unable to open file: $file", E_GENERAL
                    );
         }
@@ -368,9 +359,6 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
         $renderer = $this->ctl->getRenderer();
 
         $compile_result = $renderer->getCompiledContent($file);
-        if (Ethna::isError($compile_result)) {
-            return $compile_result;
-        }
 
         printf("Analyzing Template file ... %s\n", $file);
 
@@ -500,7 +488,7 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
               : 'locale/skel.msg.ini';
         $resolved = $this->_resolveSkelfile($skel);
         if ($resolved === false) {
-            return Ethna::raiseError("skelton file [%s] not found.\n", $skel);
+            throw new Ethna_Exception(sprintf("skelton file [%s] not found.\n", $skel));
         } else {
             $skel = $resolved;
         }
@@ -545,11 +533,11 @@ class Ethna_Plugin_Generator_I18n extends Ethna_Plugin_Generator
         }
         $wfp = @fopen($outfile_path, "w");
         if ($wfp == null) {
-            return Ethna::raiseError("unable to open file: $outfile_path");
+            throw new Ethna_Exception("unable to open file: $outfile_path");
         }
         if (fwrite($wfp, $contents) === false) {
             fclose($wfp);
-            return Ethna::raiseError("unable to write contents to $outfile_path");
+            throw new Ethna_Exception("unable to write contents to $outfile_path");
         }
         fclose($wfp);
         printf("Message catalog template successfully created [%s]\n", $outfile_path);

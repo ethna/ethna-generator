@@ -52,8 +52,7 @@ class Ethna_Plugin_Generator_Action extends Ethna_Plugin_Generator
                 $skelton = "skel.action_xmlrpc.php";
                 break;
             default:
-                $err = Ethna::raiseError('unknown gateway.');
-                return $err;
+                throw new Ethna_Exception('unknown gateway.');
             }
         }
 

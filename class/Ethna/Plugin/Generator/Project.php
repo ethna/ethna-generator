@@ -67,9 +67,6 @@ class Ethna_Plugin_Generator_Project extends Ethna_Plugin_Generator
         // double check.
         $id = strtolower($id);
         $r = Ethna_Controller::checkAppId($id);
-        if (Ethna::isError($r)) {
-            return $r;
-        }
 
         // ディレクトリ作成
         if (is_dir($basedir) == false) {
@@ -185,17 +182,11 @@ class Ethna_Plugin_Generator_Project extends Ethna_Plugin_Generator
         }
 
         $real_r = $this->_generate($realfile_maps, $macro, $skeldir);
-        if (Ethna::isError($real_r)) {
-            return $real_r;
-        }
 
         //  skelファイルにはエンコーディングマクロは適用しない
         //  skel.template.tpl は、add-[view|template]時に適用させるため。
         unset($default_macro['client_enc']);
         $skel_r = $this->_generate($skelfile_maps, $default_macro, $skeldir);
-        if (Ethna::isError($skel_r)) {
-            return $skel_r;
-        }
 
         return true;
     }
@@ -219,7 +210,7 @@ class Ethna_Plugin_Generator_Project extends Ethna_Plugin_Generator
                 $skel = "$skeldir/$skel";
             }
             if ($this->_generateFile($skel, $realfile, $macro) == false) {
-                return Ethna::raiseError("generating files failed");
+                throw new Ethna_Exception("generating files failed");
             }
         }
         return true;
