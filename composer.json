@@ -24,5 +24,10 @@
         "psr-0": {
             "Ethna": "class"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6.x-dev"
+        }
     }
 }
