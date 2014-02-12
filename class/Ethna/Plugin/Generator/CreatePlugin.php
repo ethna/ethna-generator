@@ -34,11 +34,6 @@ class Ethna_Plugin_Generator_CreatePlugin extends Ethna_Plugin_Generator
         $plugin_dir = "$basedir/plugin";
         if (!$forpackage) {
             $chk_ctl = Ethna_Handle::getAppController(getcwd());
-            if (Ethna::isError($chk_ctl)) {
-                return Ethna::raiseError(
-                           "ERROR: You are not in Ethna project. specify [-p|--plugin-package] option, or change directory to the Ethna Project\n"
-                );
-            }
             $plugin_dir = $chk_ctl->getDirectory('plugin');
         }
 
@@ -49,7 +44,7 @@ class Ethna_Plugin_Generator_CreatePlugin extends Ethna_Plugin_Generator
 
         //   type check.
         if (empty($types)) {
-            return Ethna::raiseError('please specify plugin type.');
+            throw new Ethna_Exception('please specify plugin type.');
         }
 
         //
@@ -64,7 +59,7 @@ class Ethna_Plugin_Generator_CreatePlugin extends Ethna_Plugin_Generator
             case 'sf':
                 break;
             default:
-                return Ethna::raiseError("unknown plugin type: ${type}", 'usage');
+                throw new Ethna_Exception("unknown plugin type: ${type}", 'usage');
             }
         }
 

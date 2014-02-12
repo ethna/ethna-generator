@@ -40,20 +40,11 @@ class Ethna_Generator
         } else {
             $ctl = Ethna_Handle::getAppController($app_dir);
         }
-        if (Ethna::isError($ctl)) {
-            return $ctl;
-        }
 
         $plugin_manager = $ctl->getPlugin();
-        if (Ethna::isError($plugin_manager)) {
-            return $plugin_manager;
-        }
 
         $generator = $plugin_manager->getPlugin('Generator', $type);
-        if (Ethna::isError($generator)) {
-            return $generator;
-        }
-        
+
         // 引数はプラグイン依存とする
         $ret = call_user_func_array(array($generator, 'generate'), $arg_list);
         return $ret;
@@ -80,20 +71,10 @@ class Ethna_Generator
         } else {
             $ctl = Ethna_Handle::getAppController($app_dir);
         }
-        if (Ethna::isError($ctl)) {
-            return $ctl;
-        }
 
         $plugin_manager = $ctl->getPlugin();
-        if (Ethna::isError($plugin_manager)) {
-            return $plugin_manager;
-        }
-
         $generator = $plugin_manager->getPlugin('Generator', $type);
-        if (Ethna::isError($generator)) {
-            return $generator;
-        }
-        
+
         // 引数はプラグイン依存とする
         $ret = call_user_func_array(array($generator, 'remove'), $arg_list);
         return $ret;
