@@ -39,7 +39,7 @@ class Ethna_Plugin_Validator_{$plugin_name} extends Ethna_Plugin_Validator
         //$form_def = $this->getFormDef($name);
         //var_dump($form_def['type']);
         //if (empty($var)) {
-        //    return Ethna::raiseNotice("empty!");
+        //    throw new Ethna_Exception("empty!");
         //}
         return true;
     }

@@ -77,11 +77,11 @@ class Ethna_Plugin_Generator_Project extends Ethna_Plugin_Generator
             $r = trim(fgets($fp, 128));
             fclose($fp);
             if (strtolower($r) != 'y') {
-                return Ethna::raiseError('aborted by user');
+                throw new Ethna_Exception('aborted by user');
             }
 
             if (mkdir($basedir, 0775) == false) {
-                return Ethna::raiseError('directory creation failed');
+                throw new Ethna_Exception('directory creation failed');
             }
         }
         foreach ($dir_list as $dir) {
@@ -93,12 +93,12 @@ class Ethna_Plugin_Generator_Project extends Ethna_Plugin_Generator
                 continue;
             }
             if (mkdir($target, $mode) == false) {
-                return Ethna::raiseError('directory creation failed');
+                throw new Ethna_Exception('directory creation failed');
             } else {
                 printf("project sub directory created [%s]\n", $target);
             }
             if (chmod($target, $mode) == false) {
-                return Ethna::raiseError('chmod failed');
+                throw new Ethna_Exception('chmod failed');
             }
         }
 
