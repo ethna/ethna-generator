@@ -40,7 +40,7 @@ class Ethna_Plugin_Generator_Test extends Ethna_Plugin_Generator
         }
         
         // ファイル名生成
-        $file = preg_replace('/_(.)/e', "'/' . strtoupper('\$1')", ucfirst($name)) . "Test.php";
+        $file = preg_replace_callback('/_(.)/', function(array $matches){return '/' . strtoupper($matches[1]);}, ucfirst($name)) . "Test.php";
         $generatePath = "$dir/$file";
         
         // スケルトン決定
@@ -52,7 +52,7 @@ class Ethna_Plugin_Generator_Test extends Ethna_Plugin_Generator
         $macro = array();
         $macro['project_id'] = ucfirst($ctl->getAppId());
         $macro['file_path'] = $file;
-        $macro['name'] = preg_replace('/_(.)/e', "strtoupper('\$1')", ucfirst($name));
+        $macro['name'] = preg_replace_callback('/_(.)/', function(array $matches){return strtoupper($matches[1]);}, ucfirst($name));
         
         $userMacro = $this->_getUserMacro();
         $macro = array_merge($macro, $userMacro);

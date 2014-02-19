@@ -28,7 +28,7 @@ class Ethna_Plugin_Generator_AppObject extends Ethna_Plugin_Generator
      */
     function generate($table_name)
     {
-        $table_id = preg_replace('/_(.)/e', "strtoupper('\$1')", ucfirst($table_name));
+        $table_id = preg_replace_callback('/_(.)/', function(array $matches){return strtoupper($matches[1]);}, ucfirst($table_name));
 
         $app_dir = $this->ctl->getDirectory('app');
         $app_path = ucfirst($this->ctl->getAppId()) . '_' . $table_id .'.php';
